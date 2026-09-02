@@ -36,7 +36,7 @@ setup() {
 
         (($verbose)) && echo "Installing ZShell..."
 
-        sudo pacman -S zsh
+        sudo pacman -S git zsh
     fi
 
 
@@ -71,7 +71,7 @@ setup() {
 
         (($verbose)) && echo "Installing NeoVim..."
 
-        sudo pacman -S nvim
+        sudo pacman -S git nvim
     fi
 }
 
@@ -272,7 +272,11 @@ configure() {
         if [[ $installed -eq 0 ]]; then
             (($verbose)) && echo "Installing yay..."
 
-            chsh -s $(which zsh) $USER
+            git clone https://aur.archlinux.org/yay-bin.git
+            cd yay-bin && makepkg -si
+            cd .. && rm -r yay-bin
+
+            yay -Y --gendb
         else
             echo "git is needed to install yay"
         fi
