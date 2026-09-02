@@ -66,8 +66,8 @@ setup() {
         sudo pacman --noconfirm -S \
             hyprland hyprshutdown hyprlock hypridle \
             libnotify swww rofi-wayland dex \
-            pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber \
-            blueman thunar git base-devel
+            pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
+            wireplumber blueman thunar git base-devel
 
         (($some_error)) || some_error=$?
     fi
@@ -81,8 +81,8 @@ setup() {
         sudo pacman --noconfirm -S \
             waybar hyprshutdown \
             libnotify rofi-wayland \
-            pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber \
-            blueman
+            pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
+            wireplumber blueman
 
         (($some_error)) || some_error=$?
     fi
