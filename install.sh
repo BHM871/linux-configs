@@ -67,7 +67,8 @@ setup() {
             hyprland hyprshutdown hyprlock hypridle \
             libnotify swww rofi-wayland dex cliphist \
             pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
-            wireplumber blueman thunar git base-devel
+            wireplumber blueman git base-devel \
+            grim slurp thunar
 
         (($some_error)) || some_error=$?
     fi
