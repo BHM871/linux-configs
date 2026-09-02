@@ -4,13 +4,25 @@ find_program() {
     echo $1 | awk '/'$2'/ { print "MATCH" }'
 }
 
+echo_bold()     { echo -e "\033[1m $1 \033[m" ; }
+
+echo_warning()  { echo -e "\t\033[1;93m $1 \033[m" ; }
+
+echo_good()     { echo -e "\t\033[1;92m $1 \033[m" ; }
+
+echo_bad() {
+    [[ $1 -eq 0 ]] && echo -e "\t\033[1;91m $2 \033[m"
+    [[ $1 -ne 0 ]] && echo -e "\t\033[1;97;101m $2 \033[1;91;49m $3 \033[m" ;
+}
+
 setup() {
     local programs=$1
     local verbose=$2
+    local some_error=0
 
-    echo -e "Installing requirements..."
+    echo_bold "Installing requirements..."
 
-    sudo pacman -Syu
+    sudo pacman --noconfirm -Syu
 
 
     # SDDM install
@@ -18,7 +30,9 @@ setup() {
 
         (($verbose)) && echo "Installing SDDM..."
 
-        sudo pacman -S sddm
+        sudo pacman --noconfirm -S sddm
+
+        (($some_error)) || some_error=$?
     fi
 
 
@@ -27,7 +41,9 @@ setup() {
 
         (($verbose)) && echo "Installing Kitty Terminal Emulator..."
 
-        sudo pacman -S kitty
+        sudo pacman --noconfirm -S kitty
+
+        (($some_error)) || some_error=$?
     fi
 
 
@@ -36,7 +52,9 @@ setup() {
 
         (($verbose)) && echo "Installing ZShell..."
 
-        sudo pacman -S git zsh
+        sudo pacman --noconfirm -S git zsh
+
+        (($some_error)) || some_error=$?
     fi
 
 
@@ -45,11 +63,13 @@ setup() {
 
         (($verbose)) && echo "Installing Hyprland configs..."
 
-        sudo pacman -S \
+        sudo pacman --noconfirm -S \
             hyprland hyprshutdown hyprlock hypridle \
             libnotify swww rofi-wayland dex \
             pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber \
             blueman thunar git base-devel
+
+        (($some_error)) || some_error=$?
     fi
 
 
@@ -58,11 +78,13 @@ setup() {
 
         (($verbose)) && echo "Installing Waybar..."
 
-        sudo pacman -S \
+        sudo pacman --noconfirm -S \
             waybar hyprshutdown \
             libnotify rofi-wayland \
             pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber \
             blueman
+
+        (($some_error)) || some_error=$?
     fi
 
 
@@ -71,8 +93,13 @@ setup() {
 
         (($verbose)) && echo "Installing NeoVim..."
 
-        sudo pacman -S git nvim
+        sudo pacman --noconfirm -S git nvim
+
+        (($some_error)) || some_error=$?
     fi
+
+    (($verbose)) && [[ $some_error -ne 0 ]] && echo_warning "Setupped with errors!"
+    (($verbose)) && [[ $some_error -eq 0 ]] && echo_good    "Setupped configs successfully!"
 }
 
 
@@ -80,14 +107,15 @@ setup() {
 create_configs() {
     local programs=$1
     local verbose=$2
+    local some_error=0
 
-    echo -e "Linking configurations..."
+    echo_bold "Linking configurations..."
 
 
     # SDDM theme
     if [[ "$(find_program $programs "sddm")" == "MATCH" ]]; then
 
-        which sddm &> /dev/null
+        which sddmm &> /dev/null
         installed=$?
 
         if [[ $installed -eq 0 ]]; then
@@ -100,7 +128,8 @@ create_configs() {
             sudo cp -r $(pwd)/assets/fonts  /usr/share/sddm/themes/ronin/fonts
             sudo cp -r $(pwd)/assets/images /usr/share/sddm/themes/ronin/images
         else
-            echo "SDDM isn't installed"
+            some_error=1
+            (($verbose)) && echo_bad 1 "sddm" "isn't installed"
         fi
     fi
 
@@ -127,7 +156,8 @@ create_configs() {
             rm -r $HOME/.config/kitty 2> /dev/null
             ln -sf $(pwd)/kitty $HOME/.config/kitty
         else
-            echo "Kitty isn't installed"
+            some_error=1
+            (($verbose)) && echo_bad 1 "kitty" "isn't installed"
         fi
     fi
 
@@ -146,7 +176,8 @@ create_configs() {
             cp $(pwd)/zsh/.zsh_aliases      $HOME/
             cp $(pwd)/zsh/.p10k.zsh         $HOME/
         else
-            echo "ZShell isn't installed"
+            some_error=1
+            (($verbose)) && echo_bad 1 "zsh" "isn't installed"
         fi
     fi
 
@@ -168,7 +199,8 @@ create_configs() {
             ln -sf $(pwd)/scripts       $HOME/.config/hypr/scripts
             ln -sf $(pwd)/styles        $HOME/.config/hypr/styles
         else
-            echo "Hyprland isn't installed"
+            some_error=1
+            (($verbose)) && echo_bad 1 "hyprland" "isn't installed"
         fi
     fi
 
@@ -190,7 +222,8 @@ create_configs() {
             ln -sf $(pwd)/scripts   $HOME/.config/waybar/scripts
             ln -sf $(pwd)/styles    $HOME/.config/waybar/styles
         else
-            echo "Waybar isn't installed"
+            some_error=1
+            (($verbose)) && echo_bad 1 "waybar" "isn't installed"
         fi
     fi
 
@@ -208,9 +241,13 @@ create_configs() {
 
             ln -sf $(pwd)/nvim $HOME/.config/nvim
         else
-            echo "NeoVim isn't installed"
+            some_error=1
+            (($verbose)) && echo_bad 1 "nvim" "isn't installed"
         fi
     fi
+
+    (($verbose)) && [[ $some_error -ne 0 ]] && echo_warning "Created configs with errors!"
+    (($verbose)) && [[ $some_error -eq 0 ]] && echo_good    "Created configs successfully!"
 }
 
 
@@ -218,8 +255,9 @@ create_configs() {
 configure() {
     local programs=$1
     local verbose=$2
+    local some_error=1
 
-    echo "Configuring..."
+    echo_bold "Configuring..."
 
 
     # SDDM setup
@@ -233,7 +271,8 @@ configure() {
 
             # TODO
         else
-            echo "SDDM isn't installed"
+            some_error=1
+            (($verbose)) && echo_bad 1 "sddm" "isn't installed"
         fi
     fi
 
@@ -244,6 +283,8 @@ configure() {
         (($verbose)) && echo "Cleaning cache fonts..."
 
         fc-cache -rf
+
+        (($some_error)) || some_error=$?
     fi
 
 
@@ -258,7 +299,8 @@ configure() {
 
             chsh -s $(which zsh) $USER
         else
-            echo "ZShell isn't installed"
+            some_error=1
+            (($verbose)) && echo_bad 1 "zsh" "isn't installed"
         fi
     fi
 
@@ -274,38 +316,42 @@ configure() {
 
             git clone https://aur.archlinux.org/yay-bin.git
             cd yay-bin && makepkg -si
-            cd .. && rm -r yay-bin
+            cd .. && rm -rf yay-bin
 
-            yay -Y --gendb
+            echo_warning "You can execute `yay -Y --gendb` to gen yay db"
         else
-            echo "git is needed to install yay"
+            some_error=1
+            (($verbose)) && echo_bad 1 "git" "is needed to install yay"
         fi
     fi
+
+    (($verbose)) && [[ $some_error -ne 0 ]] && echo_warning "Configured with errors!"
+    (($verbose)) && [[ $some_error -eq 0 ]] && echo_good    "Configured successfully!"
 }
 
 
 
 programs_options="sddm,kitty,zsh,fonts,hyprland,waybar,nvim,yay"
 print_help() {
-    echo -e ""
-    echo -e "Usage:"
-    echo -e "   ./install.sh [OPTIONS]"
-    echo -e ""
-    echo -e "This is a basic theme installer"
-    echo -e ""
-    echo -e "Options:"
-    echo -e "   -p, --programs <programs>   Define which programs will be installed and configured."
-    echo -e "                                   Atual options: $programs_options"
-    echo -e "   -s, --setup                 Define if programs will be installed before configure."
-    echo -e "   -c, --configure             Define if additioanl configurations will be do."
-    echo -e "                                   For exemple: Clean fonts cache, configure yay, define SDDM default, etc."
-    echo -e ""
-    echo -e "   -sp <programs>              Define programs and execute setup."
-    echo -e "   -cp <programs>              Define programs and configure."
-    echo -e "   -scp <programs>             Define programs, setup and configure."
-    echo -e ""
-    echo -e "   -h, --help"
-    echo -e "   -v, --verbose"
+    echo ""
+    echo "Usage:"
+    echo "   ./install.sh [OPTIONS]"
+    echo ""
+    echo "This is a basic theme installer"
+    echo ""
+    echo "Options:"
+    echo "   -p, --programs <programs>   Define which programs will be installed and configured."
+    echo "                                   Atual options: $programs_options"
+    echo "   -s, --setup                 Define if programs will be installed before configure."
+    echo "   -c, --configure             Define if additioanl configurations will be do."
+    echo "                                   For exemple: Clean fonts cache, configure yay, define SDDM default, etc."
+    echo ""
+    echo "   -sp <programs>              Define programs and execute setup."
+    echo "   -cp <programs>              Define programs and configure."
+    echo "   -scp <programs>             Define programs, setup and configure."
+    echo ""
+    echo "   -h, --help"
+    echo "   -v, --verbose"
 }
 
 
