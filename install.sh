@@ -270,7 +270,9 @@ configure() {
         if [[ $installed -eq 0 ]]; then
             (($verbose)) && echo "Setupping SDDM as Display Manager..."
 
-            # TODO
+            actual_dm=$(systemctl status display-manager | awk ' NR <= 1 { print $2 } ')
+            sudo systemctl disable "$actual_dm"
+            sudo systemctl enable "sddm.service"
         else
             some_error=1
             (($verbose)) && echo_bad 1 "sddm" "isn't installed"
