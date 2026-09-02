@@ -65,7 +65,7 @@ setup() {
 
         sudo pacman --noconfirm -S \
             hyprland hyprshutdown hyprlock hypridle \
-            libnotify swww rofi-wayland dex \
+            libnotify swww rofi-wayland dex cliphist \
             pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
             wireplumber blueman thunar git base-devel
 
