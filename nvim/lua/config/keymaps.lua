@@ -7,11 +7,13 @@ local keymap = vim.keymap.set
 
 -------- Atalhos funcionais
 keymap("n", "<F60>", vim.api.open_terminal, opts)
+keymap("n", "<M-F12>", vim.api.open_terminal, opts)
 keymap("n", "<A-o>", ":only<CR>", opts)
 
 -------- Salvar e fechar buffers
 keymap("n", "<C-s>", ":w<CR>", opts)
 keymap("n", "<F28>", ":NvimTreeClose<CR>:bdelete<CR>", opts)
+keymap("n", "<C-F4>", ":NvimTreeClose<CR>:bdelete<CR>", opts)
 
 -------- Navegacoes entre telas
 keymap("n", "<C-h>", "<C-w>h", opts)
@@ -38,7 +40,9 @@ keymap("i", "<A-o>", ":only<CR>", opts)
 
 ------ Atalhos funcionais
 keymap("t", "<F28>", "<C-\\><C-n>:bd!<CR>", opts)
+keymap("t", "<C-F4>", "<C-\\><C-n>:bd!<CR>", opts)
 keymap("t", "<F60>", "<C-\\><C-n>:q<CR>", opts)
+keymap("t", "<M-F12>", "<C-\\><C-n>:q<CR>", opts)
 
 keymap("t", "<C-h>", "<C-\\><C-n><C-w>h", opts)
 keymap("t", "<C-j>", "<C-\\><C-n><C-w>j", opts)
