@@ -1,0 +1,7 @@
+alias build="mvn clean compile package"
+
+alias ls="ls --color"
+alias grep="grep --color"
+alias diff="diff --color"
+alias ip="ip --color"
+alias neofetch="fastfetch"

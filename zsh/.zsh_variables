@@ -1,0 +1,13 @@
+# My environment variables
+export JDK_21="/usr/lib/jdk/21.0.6"
+export JDK_17="/usr/lib/jdk/17.0.12"
+export JAVA_HOME=$JDK_21
+export JDTLS_JVM_ARGS="-javaagent:$HOME/.m2/repository/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar"
+
+export MAVEN_HOME="/usr/lib/maven/3.9.6"
+
+export NVIM_HOME="/opt/nvim"
+
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:$JAVA_HOME/bin:$MAVEN_HOME/bin:$NVIM_HOME/bin"
+
+export TERM_EMULATOR="kitty"
