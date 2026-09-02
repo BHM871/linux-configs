@@ -115,7 +115,7 @@ create_configs() {
     # SDDM theme
     if [[ "$(find_program $programs "sddm")" == "MATCH" ]]; then
 
-        which sddmm &> /dev/null
+        which sddm &> /dev/null
         installed=$?
 
         if [[ $installed -eq 0 ]]; then
@@ -184,7 +184,7 @@ create_configs() {
 
     # Hyprland configs
     if [[ "$(find_program $programs "hyprland")" == "MATCH" ]]; then
-        which start_hyprland &> /dev/null
+        which start-hyprland &> /dev/null
         installed=$?
 
         if [[ $installed -eq 0 ]]; then
