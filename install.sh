@@ -31,8 +31,9 @@ setup() {
         (($verbose)) && echo "Installing SDDM..."
 
         sudo pacman --noconfirm -S sddm
+        local stats=$?
 
-        (($some_error)) || some_error=$?
+        [[ $stats -ne 0 ]] && some_error=$stats
     fi
 
 
@@ -42,8 +43,9 @@ setup() {
         (($verbose)) && echo "Installing Kitty Terminal Emulator..."
 
         sudo pacman --noconfirm -S kitty
+        local stats=$?
 
-        (($some_error)) || some_error=$?
+        [[ $stats -ne 0 ]] && some_error=$stats
     fi
 
 
@@ -53,8 +55,9 @@ setup() {
         (($verbose)) && echo "Installing ZShell..."
 
         sudo pacman --noconfirm -S git zsh
+        local stats=$?
 
-        (($some_error)) || some_error=$?
+        [[ $stats -ne 0 ]] && some_error=$stats
     fi
 
 
@@ -69,8 +72,9 @@ setup() {
             pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
             wireplumber blueman git base-devel \
             grim slurp thunar
+        local stats=$?
 
-        (($some_error)) || some_error=$?
+        [[ $stats -ne 0 ]] && some_error=$stats
     fi
 
 
@@ -84,8 +88,9 @@ setup() {
             libnotify rofi-wayland \
             pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
             wireplumber blueman
+        local stats=$?
 
-        (($some_error)) || some_error=$?
+        [[ $stats -ne 0 ]] && some_error=$stats
     fi
 
 
@@ -95,8 +100,9 @@ setup() {
         (($verbose)) && echo "Installing NeoVim..."
 
         sudo pacman --noconfirm -S git nvim
+        local stats=$?
 
-        (($some_error)) || some_error=$?
+        [[ $stats -ne 0 ]] && some_error=$stats
     fi
 
     (($verbose)) && [[ $some_error -ne 0 ]] && echo_warning "Setupped with errors!"
@@ -256,7 +262,7 @@ create_configs() {
 configure() {
     local programs=$1
     local verbose=$2
-    local some_error=1
+    local some_error=0
 
     echo_bold "Configuring..."
 
@@ -286,8 +292,9 @@ configure() {
         (($verbose)) && echo "Cleaning cache fonts..."
 
         fc-cache -rf
+        local stats=$?
 
-        (($some_error)) || some_error=$?
+        [[ $stats -ne 0 ]] || some_error=$stats
     fi
 
 
