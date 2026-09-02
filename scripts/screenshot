@@ -30,7 +30,7 @@ main() {
 
     grim "${opts[@]}" $FULL_FILENAME
 
-    ((can_copy)) && copy
+    (($can_copy)) && copy
 
     notify-send "Screenshot" "Saved to $FULL_FILENAME" \
         --icon nwg-screenshot
