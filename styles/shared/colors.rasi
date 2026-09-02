@@ -1,0 +1,16 @@
+/**
+ *
+ * Author : Adrian Almeida
+ * Github : @BHM871
+ *
+ * Colors
+ **/
+
+* {
+    background:     #282C34FF;
+    background-alt: #3F4451FF;
+    foreground:     #ABB2BFFF;
+    selected:       #BE5046FF;
+    active:         #98C379FF;
+    urgent:         #E86671FF;
+}

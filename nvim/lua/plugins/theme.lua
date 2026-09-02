@@ -5,7 +5,7 @@ return {
     config = function()
       local onedark = require("onedark")
       onedark.setup({
-        style = 'darker'
+        style = 'dark'
       })
       onedark.load()
     end

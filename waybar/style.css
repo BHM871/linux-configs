@@ -1,0 +1,408 @@
+/* ============================================================
+ * PALETA
+ * ============================================================ */
+
+@define-color black        #181a1f;
+@define-color bg0          #282c34;
+@define-color bg1          #31353f;
+@define-color bg2          #393f4a;
+@define-color bg3          #3b3f4c;
+@define-color bg-d         #21252b;
+
+@define-color bg-blue      #73b8f1;
+@define-color bg-yellow    #ebd09c;
+
+@define-color fg            #abb2bf;
+
+@define-color purple        #c678dd;
+@define-color green         #98c379;
+@define-color orange        #d19a66;
+@define-color blue          #61afef;
+@define-color yellow        #e5c07b;
+@define-color cyan          #56b6c2;
+
+@define-color red           #e86671;
+
+@define-color grey          #5c6370;
+@define-color light-grey    #848b98;
+
+@define-color dark-cyan     #2b6f77;
+@define-color dark-red      #be5046;
+@define-color dark-yellow   #93691d;
+@define-color dark-purple   #8a3fa0;
+
+@define-color diff-add      #31392b;
+@define-color diff-delete   #382b2c;
+@define-color diff-change   #1c3448;
+@define-color diff-text     #2c5372;
+
+
+/* ============================================================
+ * GLOBAL
+ * ============================================================ */
+
+* {
+    min-height: 0;
+    min-width: 0;
+
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    font-weight: 600;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: @fg;
+}
+
+
+/* ============================================================
+ * CONTAINERS GERAIS
+ * ============================================================ */
+
+#works,
+#mpris,
+#taskbar,
+#tray,
+#system,
+#clock,
+#tiny,
+#power {
+    margin: 7px 2px 0 2px;
+    padding: 2px 4px;
+
+    background-color: @bg-d;
+
+    border: 1px solid @bg1;
+    border-radius: 9px;
+}
+
+
+/* ============================================================
+ * DISTRO
+ * ============================================================ */
+
+#custom-distro {
+    min-width: 28px;
+    min-height: 28px;
+
+    margin: 3px 1px;
+    padding: 0 6px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: transparent;
+    color: @grey;
+}
+
+
+
+/* ============================================================
+ * WORKSPACES
+ * ============================================================ */
+
+#workspaces button {
+    min-width: 28px;
+    min-height: 28px;
+
+    margin: 3px 1px;
+    padding: 0 6px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: transparent;
+    color: @grey;
+
+    transition:
+        background-color 0.30s ease,
+        color 0.15s ease;
+}
+
+
+/* Hover */
+
+#workspaces button:hover {
+    background-color: @bg1;
+    color: @fg;
+}
+
+
+/* ============================================================
+ * WORKSPACE URGENTE
+ * ============================================================ */
+
+#workspaces button.urgent {
+    background-color: @diff-delete;
+    color: @red;
+}
+
+
+/* ============================================================
+ * WORKSPACE VAZIO
+ * ============================================================ */
+
+#workspaces button.empty {
+    color: @grey;
+}
+
+
+/* ============================================================
+ * PAC-MAN / WORKSPACE ATIVO
+ * ============================================================ */
+
+#workspaces button.active {
+    background-color: @bg1;
+    color: @yellow;
+}
+
+#workspaces button.active:hover {
+    background-color: @yellow;
+    color: @black;
+}
+
+
+/* ============================================================
+ * MEDIA
+ * ============================================================ */
+
+#mpris {
+    color: @cyan;
+}
+
+#mpris.playing {
+    color: @purple;
+}
+
+#mpris.paused {
+    color: @light-grey;
+}
+
+
+/* ============================================================
+ * TASKBAR CENTRAL
+ * ============================================================ */
+
+#taskbar.empty {
+    min-height: 0;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+}
+
+#taskbar button {
+    min-width: 32px;
+    min-height: 30px;
+
+    margin: 3px 2px;
+    padding: 0 6px;
+
+    border: none;
+    border-radius: 6px;
+
+    background-color: transparent;
+    color: @light-grey;
+
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+#taskbar button:hover {
+    background-color: @bg1;
+    color: @fg;
+}
+
+#taskbar button.active {
+    background-color: @bg1;
+    color: @red;
+}
+
+
+/* ============================================================
+ * TRAY
+ * ============================================================ */
+
+#tray {
+    color: @red
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
+
+
+/* ============================================================
+ * SISTEMA
+ * CPU + MEMÓRIA + TEMPERATURA
+ * ============================================================ */
+
+#cpu,
+#memory,
+#temperature {
+    padding: 0 7px;
+
+    background-color: transparent;
+
+    border: none;
+}
+
+#cpu {
+    color: @cyan;
+}
+
+#cpu.warning {
+    color: @yellow;
+}
+
+#cpu.critical {
+    color: @red;
+}
+
+
+#memory {
+    color: @purple;
+}
+
+#memory.warning {
+    color: @yellow;
+}
+
+#memory.critical {
+    color: @red;
+}
+
+
+#temperature {
+    color: @orange;
+}
+
+#temperature.critical {
+    color: @red;
+}
+
+
+/* ============================================================
+ * CLOCK
+ * ============================================================ */
+
+#clock {
+    color: @blue;
+}
+
+
+/* ============================================================
+ * TINY
+ * VOLUME + BATTERY + NETWORK
+ * ============================================================ */
+
+#wireplumber,
+#battery,
+#bluetooth,
+#network {
+    padding: 0 10px;
+}
+
+#wireplumber {
+    color: @purple;
+}
+
+#wireplumber.muted {
+    color: @grey;
+}
+
+#battery {
+    color: @green;
+}
+
+#battery.warning {
+    color: @yellow;
+}
+
+#battery.critical {
+    color: @red;
+}
+
+#bluetooth {
+    color: @dark-yellow;
+}
+
+#bluetooth.connected {
+    color: @yellow;
+}
+
+#bluetooth.disabled,
+#bluetooth.off {
+    color: @grey;
+}
+
+#network {
+    color: @blue;
+}
+
+#network.ethernet {
+    color: @cyan;
+}
+
+#network.disconnected {
+    color: @grey;
+}
+
+
+/* ============================================================
+ * POWER
+ * NOTIFICAÇÃO + POWER
+ * ============================================================ */
+
+#custom-notification,
+#custom-power {
+    padding: 0 8px;
+
+    border: none;
+
+    background-color: transparent;
+}
+
+#custom-notification {
+    color: @yellow;
+}
+
+#custom-notification:hover {
+    background-color: @bg1;
+}
+
+
+#custom-power {
+    color: @red;
+}
+
+#custom-power:hover {
+    background-color: @diff-delete;
+}
+
+
+/* ============================================================
+ * TOOLTIP
+ * ============================================================ */
+
+tooltip {
+    padding: 8px 12px;
+
+    background-color: @bg-d;
+
+    border: 1px solid @bg1;
+    border-radius: 8px;
+
+    color: @fg;
+}
+
+tooltip label {
+    color: @fg;
+}

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+W_PATH="$(xdg-user-dir PICTURES)/Wallpapers"
+echo $W_PATH
+
+FILES() { find "$W_PATH" -type f; }
+
+W_FILES () {
+    FILES | while read -r F_PATH; do
+        F_NAME=$(basename "$F_PATH")
+        echo -en "$F_NAME\0icon\x1fthumbnail://$F_PATH\n"
+    done
+}
+
+CHOSED=$(W_FILES | rofi -dmenu \
+    -i \
+    -p "Wallpapers" \
+    -theme "~/.config/hypr/styles/wallpaper.rasi"
+)
+
+awww img "$W_PATH/$CHOSED" \
+    --transition-type wave \
+    --transition-fps 60 \
+    --transition-duration 2

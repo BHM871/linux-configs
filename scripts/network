@@ -1,0 +1,477 @@
+#!/usr/bin/env bash
+
+# ============================================================
+# NetworkManager + Rofi
+# Interface gráfica simples para NetworkManager usando nmcli
+# ============================================================
+
+set -u
+
+# ------------------------------------------------------------
+# Configuração
+# ------------------------------------------------------------
+
+ROFI="rofi"
+NMCLI="nmcli"
+
+ROFI_THEME="$HOME/.config/waybar/styles/network.rasi"
+ROFI_PASS_THEME="$HOME/.config/waybar/styles/password.rasi"
+
+# ------------------------------------------------------------
+# Funções auxiliares
+# ------------------------------------------------------------
+
+rofi_menu() {
+    "$ROFI" \
+        -dmenu \
+        -i \
+        -p "Network" \
+        -theme "$ROFI_THEME"
+}
+
+notify() {
+    notify-send "Wi-Fi - $1" --icon "network-wireless-on" \
+        --hint "string:x-canonical-private-synchronous:network"
+}
+
+# Converte intensidade do Wi-Fi para um ícone.
+wifi_icon() {
+    local signal="$1"
+
+    if (( signal >= 80 )); then
+        echo "󰤨"
+    elif (( signal >= 60 )); then
+        echo "󰤥"
+    elif (( signal >= 40 )); then
+        echo "󰤢"
+    elif (( signal >= 20 )); then
+        echo "󰤟"
+    else
+        echo "󰤯"
+    fi
+}
+
+# ------------------------------------------------------------
+# Estado do Wi-Fi
+# ------------------------------------------------------------
+
+wifi_status() {
+    "$NMCLI" radio wifi
+}
+
+# ------------------------------------------------------------
+# Estado da conexão
+# ------------------------------------------------------------
+
+current_wifi() {
+    "$NMCLI" -t -f IN-USE,SSID,SIGNAL,SECURITY device wifi \
+        | awk -F: '$1 == "*" { print $2 }'
+}
+
+current_device() {
+    "$NMCLI" -t -f DEVICE,TYPE,STATE,CONNECTION device \
+        | awk -F: '$3 == "connected" { print $1 ":" $2 ":" $4 }'
+}
+
+# ------------------------------------------------------------
+# Informações detalhadas da conexão atual
+# ------------------------------------------------------------
+
+show_connection_info() {
+
+    local info
+
+    info=$(
+        "$NMCLI" device show 2>/dev/null |
+        grep -E \
+        'GENERAL.DEVICE:|GENERAL.TYPE:|GENERAL.CONNECTION:|IP4.ADDRESS|IP4.GATEWAY|IP4.DNS|IP6.ADDRESS'
+    )
+
+    if [[ -z "$info" ]]; then
+        notify "No active connection"
+        return
+    fi
+
+    printf '%s\n' "$info" |
+        "$ROFI" \
+            -dmenu \
+            -i \
+            -p "Connection Info" \
+            -theme "$ROFI_THEME"
+}
+
+# ------------------------------------------------------------
+# Conectar a uma rede Wi-Fi
+# ------------------------------------------------------------
+
+connect_wifi() {
+
+    "$NMCLI" device wifi rescan >/dev/null 2>&1
+
+    local networks
+
+    networks=$(
+        "$NMCLI" -t \
+            -f IN-USE,SSID,SIGNAL,SECURITY \
+            device wifi list |
+        awk -F: '
+        {
+            connected = ($1 == "*")
+            ssid = $2
+            signal = $3
+            security = $4
+
+            if (ssid == "")
+                next
+
+            if (security == "")
+                security = "Open"
+
+            if (connected)
+                mark = "✓"
+            else
+                mark = " "
+
+            print mark "\t" ssid "\t" signal "%\t" security
+        }'
+    )
+
+    if [[ -z "$networks" ]]; then
+        notify "Not found Wi-Fi networks"
+        return
+    fi
+
+    local selected
+    selected=$(
+        printf '%s\n' "$networks" |
+        "$ROFI" \
+            -dmenu \
+            -i \
+            -p "Wi-Fi" \
+            -theme "$ROFI_THEME"
+    )
+
+    [[ -z "$selected" ]] && return
+
+    local ssid
+    local security
+
+    ssid=$(printf '%s' "$selected" | cut -f2)
+    security=$(printf '%s' "$selected" | cut -f4)
+
+    # --------------------------------------------------------
+    # Rede aberta
+    # --------------------------------------------------------
+
+    if [[ "$security" == "Open" ]]; then
+
+        "$NMCLI" device wifi connect "$ssid"
+
+        if [[ $? -eq 0 ]]; then
+            notify "Connected to $ssid"
+        else
+            notify "Can't connect to $ssid"
+        fi
+
+        return
+    fi
+
+    # --------------------------------------------------------
+    # Rede protegida
+    # --------------------------------------------------------
+
+    local password
+
+    password=$(
+        "$ROFI" \
+            -dmenu \
+            -password \
+            -p "Pass" \
+            -theme "$ROFI_PASS_THEME"
+    )
+
+    [[ -z "$password" ]] && return
+
+    if "$NMCLI" device wifi connect "$ssid" password "$password"; then
+        notify "Connected to $ssid"
+    else
+        notify "Connection error to $ssid"
+    fi
+}
+
+# ------------------------------------------------------------
+# Conexões salvas
+# ------------------------------------------------------------
+
+saved_connections() {
+
+    local connections
+
+    connections=$(
+        "$NMCLI" -t \
+            -f NAME,TYPE,DEVICE \
+            connection show |
+        awk -F: '
+        {
+            name = $1
+            type = $2
+            device = $3
+
+            if (type == "802-11-wireless")
+                icon = "󰤨"
+            else if (type == "802-3-ethernet")
+                icon = "󰈀"
+            else if (type == "vpn")
+                icon = "󰒍"
+            else
+                icon = "󰋁"
+
+            if (device != "")
+                status = "✓"
+            else
+                status = ""
+
+            print status "\t" icon " " name
+        }'
+    )
+
+    [[ -z "$connections" ]] && return
+
+    local selected
+
+    selected=$(
+        printf '%s\n' "$connections" |
+        "$ROFI" \
+            -dmenu \
+            -i \
+            -p "Saved Connections" \
+            -theme "$ROFI_THEME"
+    )
+
+    [[ -z "$selected" ]] && return
+
+    local name
+
+    name=$(printf '%s' "$selected" | cut -f2)
+
+    # Remove o ícone do começo.
+    name="${name#* }"
+
+    local action
+
+    action=$(
+        printf '%s\n' \
+            "󰤨  Connect" \
+            "󰅖  Delete" \
+            "󰅖  Cancel" |
+        "$ROFI" \
+            -dmenu \
+            -i \
+            -p "$name" \
+            -theme "$ROFI_THEME"
+    )
+
+    case "$action" in
+
+        "󰤨  Connect")
+            if "$NMCLI" connection up "$name"; then
+                notify "Connected to $name"
+            else
+                notify "Connection error to $name"
+            fi
+            ;;
+
+        "󰅖  Delete")
+            if "$NMCLI" connection delete "$name"; then
+                notify "Connection removed $name"
+            else
+                notify "Can't be remove $name"
+            fi
+            ;;
+
+    esac
+}
+
+# ------------------------------------------------------------
+# Ethernet
+# ------------------------------------------------------------
+
+ethernet_menu() {
+
+    local devices
+
+    devices=$(
+        "$NMCLI" -t \
+            -f DEVICE,TYPE,STATE,CONNECTION \
+            device |
+        awk -F: '
+        $2 == "ethernet" {
+            print $1 "\t" $3 "\t" $4
+        }'
+    )
+
+    [[ -z "$devices" ]] && {
+        notify "No Ethernet entry"
+        return
+    }
+
+    local selected
+
+    selected=$(
+        printf '%s\n' "$devices" |
+        "$ROFI" \
+            -dmenu \
+            -i \
+            -p "Ethernet" \
+            -theme "$ROFI_THEME"
+    )
+
+    [[ -z "$selected" ]] && return
+
+    local device
+    device=$(printf '%s' "$selected" | cut -f1)
+
+    local state
+    state=$(printf '%s' "$selected" | cut -f2)
+
+    if [[ "$state" == "connected" ]]; then
+
+        "$NMCLI" device disconnect "$device"
+
+        if [[ $? -eq 0 ]]; then
+            notify "Ethernet disconnected"
+        else
+            notify "Can't disconnect"
+        fi
+
+    else
+
+        "$NMCLI" device connect "$device"
+
+        if [[ $? -eq 0 ]]; then
+            notify "Ethernet connect"
+        else
+            notify "Can't connect"
+        fi
+
+    fi
+}
+
+# ------------------------------------------------------------
+# Menu principal
+# ------------------------------------------------------------
+
+main_menu() {
+
+    local wifi
+    wifi=$(wifi_status)
+
+    local current
+    current=$(current_wifi)
+
+    local wifi_state
+
+    if [[ "$wifi" == "enabled" ]]; then
+        wifi_state="󰖩  Wi-Fi: ON"
+    else
+        wifi_state="󰖪  Wi-Fi: OFF"
+    fi
+
+    local current_state
+
+    if [[ -n "$current" ]]; then
+        current_state="󰤨  Connected: $current"
+    else
+        current_state="󰤭  Not connected"
+    fi
+
+    local options
+
+    options=$(cat <<EOF
+$current_state
+────────────────────────
+$wifi_state
+󰤨  Wi-Fi Networks
+󰈀  Ethernet
+󰆍  Saved Connections
+󰋼  Connection Information
+󰑓  Refresh
+⚙  Network Settings
+󰅖  Quit
+EOF
+)
+
+    local selected
+
+    selected=$(
+        printf '%s\n' "$options" |
+        "$ROFI" \
+            -dmenu \
+            -i \
+            -p "Network" \
+            -theme "$ROFI_THEME"
+    )
+
+    [[ -z "$selected" ]] && exit 0
+
+    case "$selected" in
+
+        "$current_state")
+            show_connection_info
+            ;;
+
+        "────────────────────────")
+            main_menu
+            ;;
+
+        "󰖩  Wi-Fi: ON")
+            "$NMCLI" radio wifi off
+            main_menu
+            ;;
+
+        "󰖪  Wi-Fi: OFF")
+            "$NMCLI" radio wifi on
+            main_menu
+            ;;
+
+        "󰤨  Wi-Fi Networks")
+            connect_wifi
+            ;;
+
+        "󰈀  Ethernet")
+            ethernet_menu
+            ;;
+
+        "󰆍  Saved Connections")
+            saved_connections
+            ;;
+
+        "󰋼  Connection Information")
+            show_connection_info
+            ;;
+
+        "󰑓  Refresh")
+            "$NMCLI" device wifi rescan >/dev/null 2>&1
+            main_menu
+            ;;
+
+        "⚙  Network Settings")
+            if command -v nm-connection-editor >/dev/null 2>&1; then
+                nm-connection-editor &
+            else
+                notify "nm-connection-editor not installed"
+            fi
+            ;;
+
+        "󰅖  Quit")
+            exit 0
+            ;;
+
+    esac
+}
+
+# ------------------------------------------------------------
+# Executar
+# ------------------------------------------------------------
+
+main_menu
