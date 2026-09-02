@@ -6,7 +6,7 @@ setup() {
     sudo pacman -S \
         hyprland hyprshutdown hyprlock hypridle libnotify \
         waybar swww rofi-wayland \
-        kitty zsh sddm \
+        kitty zsh nvim sddm \
         pipewire pipewire-alsa pipewire-jack pipewire-pulse wireplumber \
         blueman \
         thunar
