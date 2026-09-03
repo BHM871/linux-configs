@@ -52,7 +52,6 @@
         ]
     },
 
-
     // ============================================================
     // DISTRO
     // ============================================================
@@ -61,7 +60,6 @@
         "format": "",
         "tooltip": false
     },
-
 
     // ============================================================
     // WORKSPACES
@@ -93,7 +91,6 @@
             "empty": "Workspace {name} — empty"
         }
     },
-
 
 
     // ============================================================
@@ -161,7 +158,6 @@
     },
 
 
-
     // ============================================================
     // SISTEMA
     // CPU + MEMORY + TEMPERATURE
@@ -176,7 +172,6 @@
             "temperature"
         ]
     },
-
 
     // ============================================================
     // CPU
@@ -195,7 +190,6 @@
         "tooltip-format": "CPU\nUsage: {usage}%"
     },
 
-
     // ============================================================
     // MEMÓRIA
     // ============================================================
@@ -213,7 +207,6 @@
         "tooltip-format": "Memory\nUsed: {used:0.1f} GB\nAvailable: {avail:0.1f} GB\nUsage: {percentage}%"
     },
 
-
     // ============================================================
     // TEMPERATURE
     // ============================================================
@@ -230,7 +223,6 @@
     },
 
 
-
     // ============================================================
     // CLOCK
     // ============================================================
@@ -243,7 +235,6 @@
         "tooltip": true,
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
-
 
 
     // ============================================================
@@ -261,7 +252,6 @@
             "network"
         ]
     },
-
 
 
     // ============================================================
@@ -282,7 +272,6 @@
             "transition-left-to-right": false,
         },
     },
-
 
     // ============================================================
     // WIREPLUMBER#SINK
@@ -312,7 +301,6 @@
         "tooltip-format": "Volume: {volume}%"
     },
 
-
     // ============================================================
     // WIREPLUMBER#SOURCE
     // ============================================================
@@ -334,7 +322,6 @@
         "tooltip-format": "Volume: {volume}%"
     },
 
-
     // ============================================================
     // ENERGY
     // PROFILES + BATTERY
@@ -353,7 +340,6 @@
             "transition-left-to-right": false,
         },
     },
-
 
     // ============================================================
     // BATTERY
@@ -374,14 +360,15 @@
         },
 
         "events": {
-            "on-discharging-warning":  "notify-send -u normal   -i gpm-battery-020 'Low Battery'      '20%'",
-            "on-discharging-critical": "notify-send -u critical -i gpm-battery-020 'Very Low Battery' '10%'",
+            "on-discharging-warning":  "powerprofilesctl set balanced    && notify-send -u normal   -i gpm-battery-020 'Low Battery'      '20%'",
+            "on-discharging-critical": "powerprofilesctl set power-saver && notify-send -u critical -i gpm-battery-020 'Very Low Battery' '10%'",
+            "on-charging-warning":  "powerprofilesctl set performance",
+            "on-charging-critical": "powerprofilesctl set balanced",
         },
 
         "tooltip": true,
         "tooltip-format": "Battery\nCapacity: {capacity}%",
     },
-
 
     // ============================================================
     // POWER PROFILE
@@ -412,7 +399,6 @@
         "escape": true,
     },
 
-
     // ============================================================
     // BLUETOOTH
     // ============================================================
@@ -433,7 +419,6 @@
         "on-click": "blueman-manager",
         "on-click-right": "~/.config/waybar/scripts/bluetooth"
     },
-
 
     // ============================================================
     // NETWORK
@@ -459,7 +444,6 @@
     },
 
 
-
     // ============================================================
     // POWER
     // NOTIFICATION + POWER
@@ -473,7 +457,6 @@
             "custom/power"
         ]
     },
-
 
     // ============================================================
     // NOTIFICATION
@@ -504,7 +487,6 @@
         "tooltip": true,
         "escape": true
     },
-
 
     // ============================================================
     // POWER
