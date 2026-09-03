@@ -237,7 +237,7 @@
     // ============================================================
 
     "clock": {
-        "interval": 1,
+        "interval": 30,
         "format": " {:%H:%M}",
         "format-alt": " {:%a %d/%m/%Y}",
 
@@ -257,6 +257,7 @@
           "wireplumber#sink",
           "wireplumber#source",
           "battery",
+          "custom/profiles",
           "bluetooth",
           "network"
         ]
@@ -314,7 +315,7 @@
     // ============================================================
 
     "battery": {
-        "interval": 10,
+        "interval": 60,
         "format": "{icon}",
         "format-icons": [
             "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
@@ -327,10 +328,44 @@
             "critical": 10
         },
 
+        "events": {
+            "on-discharging-warning":  "notify-send -u normal   -i gpm-battery-020 'Low Battery'      '20%'",
+            "on-discharging-critical": "notify-send -u critical -i gpm-battery-020 'Very Low Battery' '10%'",
+        },
+
         "tooltip": true,
         "tooltip-format": "Battery\nCapacity: {capacity}%",
 
-        "on-click": "~/.config/waybar/scripts/power-profiles"
+    },
+
+
+    // ============================================================
+    // POWER PROFILE
+    // ============================================================
+
+    "custom/profiles": {
+        "exec": "~/.config/waybar/scripts/power-profiles",
+        "return-type": "json",
+
+        "interval": 10,
+
+        "format": "{icon}",
+        "format-icons": {
+            "performance": " ",
+            "balanced": " ",
+            "power-saver": " ",
+        },
+
+        "menu": "on-click",
+        "menu-file": "~/.config/waybar/styles/power-profiles.xml",
+        "menu-actions": {
+            "performance": "powerprofilesctl set performance && notify-send -i battery-profile-performance 'Power Profile Changed' 'Performance'",
+            "balanced":    "powerprofilesctl set balanced    && notify-send -i battery-profile-balanced    'Power Profile Changed' 'Balanced'",
+            "powersave":   "powerprofilesctl set power-saver && notify-send -i battery-profile-powersave   'Power Profile Changed' 'Power Saver'",
+        },
+
+        "tooltip": true,
+        "escape": true,
     },
 
 
@@ -361,7 +396,7 @@
     // ============================================================
 
     "network": {
-        "interval": 3,
+        "interval": 10,
 
         "format-wifi": "{icon}",
         "format-ethernet": "󰌘",

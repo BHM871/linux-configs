@@ -330,6 +330,10 @@ window#waybar {
     color: @red;
 }
 
+#custom-profiles {
+    color: @green;
+}
+
 #bluetooth {
     color: @dark-yellow;
 }
@@ -363,11 +367,7 @@ window#waybar {
 
 #custom-notification,
 #custom-power {
-    padding: 0 8px;
-
-    border: none;
-
-    background-color: transparent;
+    padding: 0 10px;
 }
 
 #custom-notification {
