@@ -360,10 +360,10 @@
         },
 
         "events": {
-            "on-discharging-warning":  "powerprofilesctl set balanced    && notify-send -u normal   -i gpm-battery-020 'Low Battery'      '20%'",
-            "on-discharging-critical": "powerprofilesctl set power-saver && notify-send -u critical -i gpm-battery-020 'Very Low Battery' '10%'",
-            "on-charging-warning":  "powerprofilesctl set performance",
-            "on-charging-critical": "powerprofilesctl set balanced",
+            "on-discharging-warning":  "~/.config/waybar/scripts/power-profiles --notify --battery 'warning'",
+            "on-discharging-critical": "~/.config/waybar/scripts/power-profiles --notify --battery 'critical'",
+            "on-charging-warning":  "~/.config/waybar/scripts/power-profiles --profile 'performance'",
+            "on-charging-critical": "~/.config/waybar/scripts/power-profiles --profile 'balanced'",
         },
 
         "tooltip": true,
@@ -375,7 +375,7 @@
     // ============================================================
 
     "custom/profiles": {
-        "exec": "~/.config/waybar/scripts/power-profiles",
+        "exec": "~/.config/waybar/scripts/power-profiles --waybar",
         "return-type": "json",
 
         "interval": 10,
@@ -390,9 +390,9 @@
         "menu": "on-click",
         "menu-file": "~/.config/waybar/styles/power-profiles.xml",
         "menu-actions": {
-            "performance": "powerprofilesctl set performance && notify-send -i battery-profile-performance 'Power Profile Changed' 'Performance'",
-            "balanced":    "powerprofilesctl set balanced    && notify-send -i battery-profile-balanced    'Power Profile Changed' 'Balanced'",
-            "powersave":   "powerprofilesctl set power-saver && notify-send -i battery-profile-powersave   'Power Profile Changed' 'Power Saver'",
+            "performance": "~/.config/waybar/scripts/power-profiles --notify --profile 'performance'",
+            "balanced":    "~/.config/waybar/scripts/power-profiles --notify --profile 'balanced'",
+            "powersave":   "~/.config/waybar/scripts/power-profiles --notify --profile 'power-saver'",
         },
 
         "tooltip": true,

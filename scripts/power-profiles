@@ -6,25 +6,108 @@ if ! command -v notify-send >/dev/null 2>&1; then
   notify_send_missing=true
 fi
 
-current_profile="$(powerprofilesctl get 2>/dev/null)"
+way() {
+    current_profile="$(powerprofilesctl get 2>/dev/null)"
 
-tooltip=""
+    tooltip=""
 
-case $current_profile in
-    performance)
-        tooltip="  Performance"
-        ;;
-    balanced)
-        tooltip="  Balanced"
-        ;;
-    power-saver)
-        tooltip="  Power Saver"
-        ;;
-esac
+    case $current_profile in
+        performance)
+            tooltip="  Performance"
+            ;;
+        balanced)
+            tooltip="  Balanced"
+            ;;
+        power-saver)
+            tooltip="  Power Saver"
+            ;;
+    esac
 
-echo $(jq -n \
-    --arg text "$current_profile" \
-    --arg alt "$current_profile" \
-    --arg tooltip "$tooltip" \
-    --arg class "$current_profile" \
-    '{text: $text, alt: $alt, tooltip: $tooltip, class: $class}')
+    echo $(jq -n \
+        --arg text "$current_profile" \
+        --arg alt "$current_profile" \
+        --arg tooltip "$tooltip" \
+        --arg class "$current_profile" \
+        '{text: $text, alt: $alt, tooltip: $tooltip, class: $class}')
+}
+
+profile() {
+    local profile="$1"
+    local notify="$2"
+
+    case $profile in
+        "performance")
+            powerprofilesctl set performance
+            (($notify)) && notify-send -i battery-profile-performance 'Power Profile Changed' 'Performance'
+            ;;
+        "balanced")
+            powerprofilesctl set balanced
+            (($notify)) && notify-send -i battery-profile-balanced    'Power Profile Changed' 'Balanced'
+            ;;
+        "power-saver")
+            powerprofilesctl set power-saver
+            (($notify)) && notify-send -i battery-profile-powersave   'Power Profile Changed' 'Power Saver'
+            ;;
+        *)
+            echo "Parameter not accept."
+            exit 1
+            ;;
+    esac
+}
+
+battery() {
+    local alert="$1"
+    local notify="$2"
+
+    case $alert in
+        "warning")
+            profile "balanced" 0
+            (($notify)) && notify-send -u normal   -i gpm-battery-020 'Low Battery'      '20%'
+            ;;
+        "critical")
+            profile "power-saver" 0
+            (($notify)) && notify-send -u critical -i gpm-battery-020 'Very Low Battery' '10%'
+            ;;
+        *)
+            echo "Parameter not accept."
+            exit 1
+            ;;
+    esac
+}
+
+main() {
+    local is_waybar=0
+    local is_battery=0
+    local battery="critical"
+    local is_profile=0
+    local profile="power-saver"
+    local notify=0
+
+    while [ "$1" != "" ]; do
+        case $1 in
+            -w|--waybar)
+                is_waybar=1
+                ;;
+            -b|--battery)
+                shift
+                is_battery=1
+                battery=$1
+                ;;
+            -p|--profile)
+                shift
+                is_profile=1
+                profile=$1
+                ;;
+            -n|--notify)
+                notify=1
+                ;;
+        esac
+        shift
+    done
+
+    (($is_waybar))  && way                          && exit 0
+    (($is_battery)) && battery "$battery" "$notify" && exit 0
+    (($is_profile)) && profile "$profile" "$notify" && exit 0
+}
+
+main "$@"
