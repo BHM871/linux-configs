@@ -247,11 +247,7 @@ window#waybar {
 #cpu,
 #memory,
 #temperature {
-    padding: 0 7px;
-
-    background-color: transparent;
-
-    border: none;
+    padding: 0 10px;
 }
 
 #cpu {
@@ -300,25 +296,26 @@ window#waybar {
 
 /* ============================================================
  * TINY
- * VOLUME + BATTERY + NETWORK
+ * AUDIO + ENERGY + BLUETOOTH + POWER
  * ============================================================ */
 
 #wireplumber,
 #battery,
+#custom-profiles,
 #bluetooth,
 #network {
     padding: 0 10px;
 }
 
-#wireplumber {
+#audio {
     color: @purple;
 }
 
-#wireplumber.muted {
+#audio .muted {
     color: @grey;
 }
 
-#battery {
+#energy {
     color: @green;
 }
 
@@ -328,10 +325,6 @@ window#waybar {
 
 #battery.critical {
     color: @red;
-}
-
-#custom-profiles {
-    color: @green;
 }
 
 #bluetooth {
@@ -362,7 +355,7 @@ window#waybar {
 
 /* ============================================================
  * POWER
- * NOTIFICAÇÃO + POWER
+ * NOTIFICATION + POWER
  * ============================================================ */
 
 #custom-notification,

@@ -40,7 +40,7 @@
 
     // ============================================================
     // WORKS
-    // DISTRO+WORKSPACES
+    // DISTRO + WORKSPACES
     // ============================================================
 
     "group/works": {
@@ -164,7 +164,7 @@
 
     // ============================================================
     // SISTEMA
-    // CPU+MEMORY+TEMPERATURE
+    // CPU + MEMORY + TEMPERATURE
     // ============================================================
 
     "group/system": {
@@ -248,20 +248,39 @@
 
     // ============================================================
     // TINY
-    // AUDIO+ENERGY+BLUETOOTH+NETWORK
+    // AUDIO + ENERGY + BLUETOOTH + NETWORK
     // ============================================================
 
     "group/tiny": {
         "orientation": "horizontal",
 
         "modules": [
-            "wireplumber#sink",
-            "wireplumber#source",
-            "battery",
-            "custom/profiles",
+            "group/audio",
+            "group/energy",
             "bluetooth",
             "network"
         ]
+    },
+
+
+
+    // ============================================================
+    // AUDIO
+    // WIREPLUMBER#SINK + WIREPLUMBER#SOURCE
+    // ============================================================
+
+    "group/audio": {
+        "orientation": "horizontal",
+
+        "modules": [
+            "wireplumber#sink",
+            "wireplumber#source",
+        ],
+
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false,
+        },
     },
 
 
@@ -317,7 +336,27 @@
 
 
     // ============================================================
-    // BATERIA
+    // ENERGY
+    // PROFILES + BATTERY
+    // ============================================================
+
+    "group/energy": {
+        "orientation": "horizontal",
+
+        "modules": [
+            "battery",
+            "custom/profiles",
+        ],
+
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false,
+        },
+    },
+
+
+    // ============================================================
+    // BATTERY
     // ============================================================
 
     "battery": {
@@ -423,7 +462,7 @@
 
     // ============================================================
     // POWER
-    // NOTIFICATION+POWER
+    // NOTIFICATION + POWER
     // ============================================================
 
     "group/power": {
