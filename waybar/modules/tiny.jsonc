@@ -1,0 +1,218 @@
+{
+    // ============================================================
+    // TINY
+    // AUDIO + ENERGY + BLUETOOTH + NETWORK
+    // ============================================================
+
+    "group/tiny": {
+        "orientation": "horizontal",
+
+        "modules": [
+            "group/audio",
+            "group/energy",
+            "bluetooth",
+            "network"
+        ]
+    },
+
+
+
+    // ============================================================
+    // AUDIO
+    // WIREPLUMBER#SINK + WIREPLUMBER#SOURCE
+    // ============================================================
+
+    "group/audio": {
+        "orientation": "horizontal",
+
+        "modules": [
+            "wireplumber#sink",
+            "wireplumber#source",
+        ],
+
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false,
+        },
+    },
+
+
+    // ============================================================
+    // WIREPLUMBER#SINK
+    // ============================================================
+
+    "wireplumber#sink": {
+        "node-type": "Audio/Sink",
+
+        "format": "{icon} ",
+        "format-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "headset": "",
+            "default": [
+                "", "", ""
+            ]
+        },
+
+        "scroll-step": 5,
+
+        "on-click": "pavucontrol",
+        "on-click-right": "~/.config/waybar/scripts/volume output mute",
+        "on-scroll-up": "~/.config/waybar/scripts/volume output up",
+        "on-scroll-down": "~/.config/waybar/scripts/volume output down",
+
+        "tooltip": true,
+        "tooltip-format": "Volume: {volume}%"
+    },
+
+
+    // ============================================================
+    // WIREPLUMBER#SOURCE
+    // ============================================================
+
+    "wireplumber#source": {
+        "node-type": "Audio/Source",
+
+        "format": "",
+        "format-muted": "",
+
+        "scroll-step": 5,
+
+        "on-click": "pavucontrol",
+        "on-click-right": "~/.config/waybar/scripts/volume input mute",
+        "on-scroll-up": "~/.config/waybar/scripts/volume input up",
+        "on-scroll-down": "~/.config/waybar/scripts/volume input down",
+
+        "tooltip": true,
+        "tooltip-format": "Volume: {volume}%"
+    },
+
+
+
+    // ============================================================
+    // ENERGY
+    // PROFILES + BATTERY
+    // ============================================================
+
+    "group/energy": {
+        "orientation": "horizontal",
+
+        "modules": [
+            "battery",
+            "custom/profiles",
+        ],
+
+        "drawer": {
+            "transition-duration": 500,
+            "transition-left-to-right": false,
+        },
+    },
+
+
+    // ============================================================
+    // BATTERY
+    // ============================================================
+
+    "battery": {
+        "interval": 60,
+        "format": "{icon}",
+        "format-icons": [
+            "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"
+        ],
+        "format-charging": "",
+        "format-full": "󰂄",
+
+        "states": {
+            "warning": 20,
+            "critical": 10
+        },
+
+        "events": {
+            "on-discharging-warning":  "~/.config/waybar/scripts/power-profiles --notify --battery 'warning'",
+            "on-discharging-critical": "~/.config/waybar/scripts/power-profiles --notify --battery 'critical'",
+            "on-charging-warning":  "~/.config/waybar/scripts/power-profiles --profile 'performance'",
+            "on-charging-critical": "~/.config/waybar/scripts/power-profiles --profile 'balanced'",
+        },
+
+        "tooltip": true,
+        "tooltip-format": "Battery\nCapacity: {capacity}%",
+    },
+
+
+    // ============================================================
+    // POWER PROFILE
+    // ============================================================
+
+    "custom/profiles": {
+        "exec": "~/.config/waybar/scripts/power-profiles --waybar",
+        "return-type": "json",
+
+        "interval": 10,
+
+        "format": "{icon}",
+        "format-icons": {
+            "performance": " ",
+            "balanced": " ",
+            "power-saver": " ",
+        },
+
+        "menu": "on-click",
+        "menu-file": "~/.config/waybar/styles/power-profiles.xml",
+        "menu-actions": {
+            "performance": "~/.config/waybar/scripts/power-profiles --notify --profile 'performance'",
+            "balanced":    "~/.config/waybar/scripts/power-profiles --notify --profile 'balanced'",
+            "powersave":   "~/.config/waybar/scripts/power-profiles --notify --profile 'power-saver'",
+        },
+
+        "tooltip": true,
+        "escape": true,
+    },
+
+
+
+    // ============================================================
+    // BLUETOOTH
+    // ============================================================
+
+    "bluetooth": {
+        "format": "{icon}",
+        "format-icons": {
+            "default": "",
+            "connected": "󰂱",
+            "disabled": "󰂲",
+        },
+
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%",
+
+        "on-click": "blueman-manager",
+        "on-click-right": "~/.config/waybar/scripts/bluetooth"
+    },
+
+
+
+    // ============================================================
+    // NETWORK
+    // ============================================================
+
+    "network": {
+        "interval": 10,
+
+        "format-wifi": "{icon}",
+        "format-ethernet": "󰌘",
+        "format-disconnected": "󰤮",
+        "format-icons": [
+            "󰤯", "󰤟", "󰤢", "󰤥", "󰤨"
+        ],
+
+        "tooltip": true,
+        "tooltip-format-wifi": "Wi-Fi\n{essid}\nSignal: {signalStrength}%\nFrequency: {frequency} GHz\n↓ {bandwidthDownBytes}\n↑ {bandwidthUpBytes}",
+        "tooltip-format-ethernet": "Ethernet\n↓ {bandwidthDownBytes}\n↑ {bandwidthUpBytes}",
+        "tooltip-format-disconnected": "Network disconnected",
+
+        "on-click": "~/.config/waybar/scripts/network",
+        "on-click-right": "nm-connection-editor"
+    },
+}

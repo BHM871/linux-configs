@@ -1,0 +1,62 @@
+{
+    // ============================================================
+    // POWER
+    // NOTIFICATION + POWER
+    // ============================================================
+
+    "group/power": {
+        "orientation": "horizontal",
+
+        "modules": [
+            "custom/notification",
+            "custom/power"
+        ]
+    },
+
+
+
+    // ============================================================
+    // NOTIFICATION
+    // ============================================================
+
+    "custom/notification": {
+        "exec": "swaync-client -swb",
+        "return-type": "json",
+
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "󱅫",
+            "none": "󰂜",
+
+            "dnd-notification": "󰂠",
+            "dnd-none": "󰪓",
+
+            "inhibited-notification": "󰂛",
+            "inhibited-none": "󰪑",
+
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰪑"
+        },
+
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+
+        "tooltip": true,
+        "escape": true
+    },
+
+
+
+    // ============================================================
+    // POWER
+    // ============================================================
+
+    "custom/power": {
+        "format": "⏻",
+
+        "tooltip": true,
+        "tooltip-format": "Power menu",
+
+        "on-click": "~/.config/waybar/scripts/powermenu"
+    }
+}

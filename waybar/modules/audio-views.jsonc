@@ -1,0 +1,58 @@
+{
+    // ============================================================
+    // AUDIO-VIEWS
+    // CAVA + MPRIS
+    // ============================================================
+
+    "group/audio-views": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/cava",
+            "mpris"
+        ]
+    },
+
+
+
+    // ============================================================
+    // CAVA
+    // ============================================================
+
+    "custom/cava": {
+        "format": {},
+        "exec": "~/.config/waybar/scripts/cava"
+    },
+
+
+
+    // ============================================================
+    // MPRIS
+    // ============================================================
+
+    "mpris": {
+        "format": "{player_icon} {artist} - {title}",
+        "format-paused": "󰏤 {artist} - {title}",
+        "format-stopped": "󰓛",
+        "player-icons": {
+            "default": "",
+            "spotify": "",
+            "firefox": "",
+            "chromium": "",
+            "mpv": "󰐹"
+        },
+        "status-icons": {
+            "paused": "󰏤",
+            "playing": "󰐊",
+            "stopped": "󰓛"
+        },
+
+        "max-length": 35,
+
+        "tooltip": true,
+        "tooltip-format": "{player}\n{artist} - {title}",
+
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous"
+    },
+}

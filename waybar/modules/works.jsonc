@@ -1,0 +1,68 @@
+{
+    // ============================================================
+    // WORKS
+    // DISTRO + WORKSPACES
+    // ============================================================
+
+    "group/works": {
+        "orientation": "horizontal",
+
+        "modules": [
+            "custom/distro",
+            "hyprland/workspaces"
+        ]
+    },
+
+
+
+    // ============================================================
+    // DISTRO
+    // ============================================================
+
+    "custom/distro": {
+        "exec": "checkupdates | wc -l",
+        "interval": "once",
+
+        "format": " ",
+
+        "on-click": "sudo pacman -Syu ; pkill -SIGRTMIN+8 waybar",
+        "signal": 8,
+
+        "tooltip": true,
+        "tooltip-format": "{text} updates"
+    },
+
+
+
+    // ============================================================
+    // WORKSPACES
+    // ============================================================
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+
+        "all-outputs": true,
+        "active-only": false,
+        "sort-by-number": true,
+
+        "on-click": "activate",
+        "enable-bar-scroll": true,
+
+        "persistent-workspaces": {
+            "*": [1, 2, 3, 4, 5]
+        },
+
+        "format-icons": {
+            "default": "•",
+            "active": "󰮯",
+            "urgent": "󰊠",
+            "special": "󰊠",
+        },
+
+        "tooltip": true,
+        "tooltips": {
+            "default": "Workspace {name}",
+            "empty": "Workspace {name} — empty"
+        }
+    },
+}
