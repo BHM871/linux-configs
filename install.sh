@@ -87,7 +87,7 @@ setup() {
             waybar hyprshutdown \
             libnotify rofi-wayland \
             pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
-            wireplumber blueman
+            wireplumber blueman pavucontrol
         local stats=$?
 
         [[ $stats -ne 0 ]] && some_error=$stats
