@@ -57,8 +57,16 @@
     // ============================================================
 
     "custom/distro": {
-        "format": "",
-        "tooltip": false
+        "exec": "checkupdates | wc -l",
+        "interval": "once",
+
+        "format": " ",
+
+        "on-click": "sudo pacman -Syu ; pkill -SIGRTMIN+8 waybar",
+        "signal": 8,
+
+        "tooltip": true,
+        "tooltip-format": "{text} updates"
     },
 
     // ============================================================
@@ -76,13 +84,14 @@
         "enable-bar-scroll": true,
 
         "persistent-workspaces": {
-            "*": [1, 2, 3, 4, 5, 6]
+            "*": [1, 2, 3, 4, 5]
         },
 
         "format-icons": {
+            "default": "•",
             "active": "󰮯",
             "urgent": "󰊠",
-            "default": "•"
+            "special": "󰊠",
         },
 
         "tooltip": true,
