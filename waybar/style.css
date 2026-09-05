@@ -61,7 +61,7 @@ window#waybar {
  * ============================================================ */
 
 #works,
-#mpris,
+#audio-views,
 #taskbar,
 #tray,
 #system,
@@ -170,9 +170,13 @@ window#waybar {
 /* ============================================================
  * MEDIA
  * ============================================================ */
+#audio-views {
+    color: @dark-red;
+}
 
+#custom-cava,
 #mpris {
-    color: @orange;
+    padding: 0 10px;
 }
 
 #mpris.playing {
