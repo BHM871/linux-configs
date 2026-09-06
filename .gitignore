@@ -1,2 +1,7 @@
 # Images
 *.git
+
+# Builds
+/assets/waybar/pkg
+/assets/waybar/src
+/assets/waybar/*.tar.*
