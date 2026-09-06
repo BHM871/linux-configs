@@ -25,7 +25,7 @@
 
         "format": " ",
 
-        "on-click": "sudo pacman -Syu ; pkill -SIGRTMIN+8 waybar",
+        "on-click": "kitty zsh -c 'sudo pacman -Syu' ; pkill -SIGRTMIN+8 waybar",
         "signal": 8,
 
         "tooltip": true,
