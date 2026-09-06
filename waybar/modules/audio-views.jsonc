@@ -22,6 +22,7 @@
     "cava": {
         "cava_config": "$HOME/.config/waybar/modules/cava.conf",
         "input_delay": 2,
+        "reverse": true,
         "format-icons" : ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
         "actions": {
             "on-click-right": "mode"
