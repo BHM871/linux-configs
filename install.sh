@@ -67,7 +67,7 @@ setup() {
         (($verbose)) && echo "Installing Hyprland configs..."
 
         sudo pacman --noconfirm -S \
-            hyprland hyprshutdown hyprlock hypridle \
+            wayland hyprland hyprshutdown hyprlock hypridle \
             libnotify swww rofi-wayland dex cliphist \
             pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
             wireplumber blueman git base-devel \
@@ -84,13 +84,21 @@ setup() {
         (($verbose)) && echo "Installing Waybar..."
 
         sudo pacman --noconfirm -S \
-            waybar hyprshutdown \
-            libnotify rofi-wayland \
+            hyprshutdown libnotify rofi-wayland \
             pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
-            wireplumber blueman pavucontrol
+            wireplumber blueman pavucontrol \
+            git base-devel cava
+
+        local local_path=$(pwd)
+
+        cd ./assets/waybar && \
+            makepkg -si 2> /dev/null && \
+            rm -rf pkg src *.tar.*
         local stats=$?
 
         [[ $stats -ne 0 ]] && some_error=$stats
+
+        cd "$local_path"
     fi
 
 

@@ -6,8 +6,9 @@
 
     "group/audio-views": {
         "orientation": "horizontal",
+
         "modules": [
-            "custom/cava",
+            "cava",
             "mpris"
         ]
     },
@@ -18,9 +19,13 @@
     // CAVA
     // ============================================================
 
-    "custom/cava": {
-        "format": {},
-        "exec": "~/.config/waybar/scripts/cava"
+    "cava": {
+        "cava_config": "$HOME/.config/waybar/modules/cava.conf",
+        "input_delay": 2,
+        "format-icons" : ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
+        "actions": {
+            "on-click-right": "mode"
+        }
     },
 
 

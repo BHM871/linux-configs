@@ -1,0 +1,63 @@
+pkgname=waybar-cava
+pkgver=0.15.0
+pkgrel=1
+
+pkgdesc='Highly customizable Wayland bar with Cava and RFKill support'
+arch=('x86_64')
+url='https://github.com/Alexays/Waybar'
+license=('MIT')
+
+provides=('waybar')
+conflicts=('waybar')
+
+depends=(
+    'cava'
+    'gtkmm3'
+    'gtk-layer-shell'
+    'jsoncpp'
+    'libdbusmenu-gtk3'
+    'libevdev'
+    'libinput'
+    'libmpdclient'
+    'libnl'
+    'libpipewire'
+    'libpulse'
+    'libwireplumber'
+    'playerctl'
+    'sndio'
+    'spdlog'
+    'systemd-libs'
+    'upower'
+    'wayland'
+)
+
+makedepends=(
+    'git'
+    'meson'
+    'ninja'
+    'scdoc'
+    'gcc'
+    'pkgconf'
+)
+
+source=(
+    "https://github.com/Alexays/Waybar/archive/refs/tags/${pkgver}.tar.gz"
+)
+
+sha256sums=('SKIP')
+
+build() {
+    cd "Waybar-${pkgver}"
+
+    arch-meson build \
+        --wrap-mode=default \
+        -Drfkill=enabled \
+        -Dcava=enabled \
+        -Dtests=disabled
+}
+
+package() {
+    cd "Waybar-${pkgver}"
+
+    DESTDIR="$pkgdir" ninja -C build install
+}

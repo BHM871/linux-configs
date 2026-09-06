@@ -8,7 +8,7 @@
         "~/.config/waybar/modules/audio-views.jsonc",
         "~/.config/waybar/modules/system.jsonc",
         "~/.config/waybar/modules/tiny.jsonc",
-        "~/.config/waybar/modules/power.jsonc",
+        "~/.config/waybar/modules/power.jsonc"
     ],
 
 
