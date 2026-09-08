@@ -327,6 +327,14 @@ window#waybar {
     color: @green;
 }
 
+#custom-profiles.performance {
+    color: @yellow
+}
+
+#custom-profiles.balanced {
+    color: @light-grey
+}
+
 #battery.warning {
     color: @yellow;
 }
