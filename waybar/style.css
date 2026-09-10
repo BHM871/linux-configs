@@ -235,7 +235,9 @@ window#waybar {
  * ============================================================ */
 
 #tray {
-    color: @red
+    padding: 0 10px;
+
+    color: @red;
 }
 
 #tray > .passive {
