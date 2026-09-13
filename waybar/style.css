@@ -174,7 +174,6 @@ window#waybar {
     color: @dark-red;
 }
 
-#custom-cava,
 #mpris {
     padding: 0 10px;
 }
@@ -300,6 +299,7 @@ window#waybar {
  * ============================================================ */
 
 #clock {
+    padding: 0 10px;
     color: @blue;
 }
 
