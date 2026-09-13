@@ -390,7 +390,6 @@ main_menu() {
   options=$(
     cat <<EOF
 $current_state
-────────────────────────
 $wifi_state
 󰤨  Wi-Fi Networks
 󰈀  Ethernet
