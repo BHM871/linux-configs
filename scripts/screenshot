@@ -6,34 +6,34 @@ FULL_FILENAME="$FULL_PATH/$(date +%Y-%m-%d-%T).png"
 mkdir -p "$FULL_PATH"
 
 copy() {
-    cat $FULL_FILENAME | wl-copy
+  cat $FULL_FILENAME | wl-copy
 }
 
 main() {
-    local can_copy=0
-    local opts=()
+  local can_copy=0
+  local opts=()
 
-    while [ "$1" != "" ]; do
-        case $1 in
-            -s|--select)
-                opts=(
-                    -g
-                    "$(slurp -d)"
-                )
-                ;;
-            "-c"|"--copy")
-                can_copy=1
-                ;;
-        esac
-        shift
-    done
+  while [ "$1" != "" ]; do
+    case $1 in
+    -s | --select)
+      opts=(
+        -g
+        "$(slurp -d)"
+      )
+      ;;
+    "-c" | "--copy")
+      can_copy=1
+      ;;
+    esac
+    shift
+  done
 
-    grim "${opts[@]}" $FULL_FILENAME
+  grim "${opts[@]}" $FULL_FILENAME
 
-    (($can_copy)) && copy
+  (($can_copy)) && copy
 
-    notify-send "Screenshot" "Saved to $FULL_FILENAME" \
-        --icon nwg-screenshot
+  notify-send "Screenshot" "Saved to $FULL_FILENAME" \
+    --icon nwg-screenshot
 }
 
 main "$@"

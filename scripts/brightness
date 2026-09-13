@@ -1,56 +1,57 @@
 #!/usr/bin/env bash
 
-(flock -n 9 || exit 0
+(
+  flock -n 9 || exit 0
 
-VALUE=5
-MAX=$(brightnessctl max)
+  VALUE=5
+  MAX=$(brightnessctl max)
 
-get_light() {
+  get_light() {
     local actual
     actual=$(brightnessctl get)
 
-    echo $(( $actual * 100 / $MAX ))
-}
+    echo $(($actual * 100 / $MAX))
+  }
 
-set_light() {
+  set_light() {
     local light=$1
 
-    brightnessctl -n2 set "$light%" &> /dev/null
+    brightnessctl -n2 set "$light%" &>/dev/null
 
     notify-send "Brightness: ${light}%" --icon "brightness" \
-        --hint "int:value:${light}" \
-        --hint "string:x-canonical-private-synchronous:light"
-}
+      --hint "int:value:${light}" \
+      --hint "string:x-canonical-private-synchronous:light"
+  }
 
-main() {
+  main() {
     local option=$1
     local value=${2:-$VALUE}
 
     if ! [[ $value =~ ^[1-9][0-9]*$ ]]; then
-        printf "%s: value must be an integer greater than 0\n" "${0##*/}" >&2
-        return 1
+      printf "%s: value must be an integer greater than 0\n" "${0##*/}" >&2
+      return 1
     fi
 
     case $option in
-        up)
-            local light
-            light=$(get_light)
+    up)
+      local light
+      light=$(get_light)
 
-            set_light $((light + value))
-            ;;
-        down)
-            local light
-            light=$(get_light)
+      set_light $((light + value))
+      ;;
+    down)
+      local light
+      light=$(get_light)
 
-            set_light $((light - value))
-            ;;
-        *)
-            print_help >&2
-            return 1
-            ;;
+      set_light $((light - value))
+      ;;
+    *)
+      print_help >&2
+      return 1
+      ;;
     esac
-}
+  }
 
-main "$@"
+  main "$@"
 
-) 9> /tmp/brightness-script.lock
+) 9>/tmp/brightness-script.lock
