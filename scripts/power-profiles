@@ -72,6 +72,9 @@ battery() {
     profile "power-saver" 0
     (($notify)) && notify-send -u critical -i gpm-battery-020 'Very Low Battery' '10%'
     ;;
+  "thurning-off")
+    systemctl suspend
+    ;;
   *)
     echo "Parameter not accept."
     exit 1
