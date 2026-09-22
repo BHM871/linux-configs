@@ -152,9 +152,9 @@
 
         "format": "{icon}",
         "format-icons": {
-            "performance": " ",
-            "balanced": " ",
-            "power-saver": " ",
+            "performance": "",
+            "balanced": "",
+            "power-saver": "",
         },
 
         "menu": "on-click",
@@ -201,7 +201,7 @@
     "network": {
         "interval": 10,
 
-        "format-wifi": "{icon}",
+        "format-wifi": "{icon} ",
         "format-ethernet": "󰌘",
         "format-disconnected": "󰤮",
         "format-icons": [

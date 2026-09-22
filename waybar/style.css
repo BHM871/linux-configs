@@ -68,8 +68,8 @@ window#waybar {
 #clock,
 #tiny,
 #power {
-    margin: 7px 2px 0 2px;
-    padding: 2px 4px;
+    margin: 4px 0 0 0;
+    padding: 1px 2px;
 
     background-color: @bg-d;
 
@@ -83,17 +83,18 @@ window#waybar {
  * ============================================================ */
 
 #custom-distro {
-    min-width: 28px;
-    min-height: 28px;
-
-    margin: 3px 1px;
-    padding: 0 6px;
+    margin: 2px 1px;
+    padding: 0 10px;
 
     border: none;
     border-radius: 6px;
 
     background-color: transparent;
-    color: @purple
+    color: @purple;
+
+    transition:
+        background-color 0.30s ease,
+        color 0.15s ease;
 }
 
 #custom-distro:hover {
@@ -106,12 +107,12 @@ window#waybar {
  * WORKSPACES
  * ============================================================ */
 
-#workspaces button {
-    min-width: 28px;
-    min-height: 28px;
+#workspaces * {
+    padding: 0 5px;
+}
 
-    margin: 3px 1px;
-    padding: 0 6px;
+#workspaces button {
+    margin: 2px 1px;
 
     border: none;
     border-radius: 6px;
@@ -175,7 +176,7 @@ window#waybar {
 }
 
 #mpris {
-    padding: 0 10px;
+    padding: 0 5px;
 }
 
 #mpris.playing {
@@ -201,11 +202,8 @@ window#waybar {
 }
 
 #taskbar button {
-    min-width: 32px;
-    min-height: 30px;
-
-    margin: 3px 2px;
-    padding: 0 6px;
+    margin: 2px 1px;
+    padding: 0 4px;
 
     border: none;
     border-radius: 6px;
@@ -234,7 +232,7 @@ window#waybar {
  * ============================================================ */
 
 #tray {
-    padding: 0 10px;
+    padding: 0 6px;
 
     color: @red;
 }
@@ -253,10 +251,8 @@ window#waybar {
  * CPU + MEMÓRIA + TEMPERATURA
  * ============================================================ */
 
-#cpu,
-#memory,
-#temperature {
-    padding: 0 10px;
+#system * {
+    padding: 0 6px;
 }
 
 #cpu {
@@ -299,7 +295,7 @@ window#waybar {
  * ============================================================ */
 
 #clock {
-    padding: 0 10px;
+    padding: 0 6px;
     color: @blue;
 }
 
@@ -309,12 +305,8 @@ window#waybar {
  * AUDIO + ENERGY + BLUETOOTH + POWER
  * ============================================================ */
 
-#wireplumber,
-#battery,
-#custom-profiles,
-#bluetooth,
-#network {
-    padding: 0 10px;
+#tiny * {
+    padding: 0 6px;
 }
 
 #audio {
@@ -376,9 +368,8 @@ window#waybar {
  * NOTIFICATION + POWER
  * ============================================================ */
 
-#custom-notification,
-#custom-power {
-    padding: 0 10px;
+#power * {
+    padding: 0 6px;
 }
 
 #custom-notification {
