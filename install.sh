@@ -80,7 +80,7 @@ setup() {
       hyprshutdown libnotify rofi-wayland \
       pipewire pipewire-alsa pipewire-jack pipewire-pulse pipewire-audio \
       wireplumber blueman pavucontrol \
-      git base-devel cava
+      git base-devel cava btop
 
     local local_path=$(pwd)
 

@@ -29,6 +29,8 @@
             "critical": 90
         },
 
+        "on-click": "kitty zsh -c 'btop'",
+
         "tooltip": true,
         "tooltip-format": "CPU\nUsage: {usage}%"
     },
@@ -48,6 +50,8 @@
             "critical": 90
         },
 
+        "on-click": "kitty zsh -c 'btop'",
+
         "tooltip": true,
         "tooltip-format": "Memory\nUsed: {used:0.1f} GB\nAvailable: {avail:0.1f} GB\nUsage: {percentage}%"
     },
@@ -64,6 +68,8 @@
         "format-critical": " temperatureC}°C",
 
         "critical-threshold": 80,
+
+        "on-click": "kitty zsh -c 'btop'",
 
         "tooltip": true,
         "tooltip-format": "Temperature\n{temperatureC}°C"
