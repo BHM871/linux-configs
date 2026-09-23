@@ -68,10 +68,9 @@ window#waybar {
 #clock,
 #tiny,
 #power {
-    margin: 4px 0 0 0;
     padding: 1px 2px;
 
-    background-color: @bg-d;
+    background: linear-gradient(@bg1, @bg-d);
 
     border: 1px solid @bg1;
     border-radius: 9px;
@@ -98,7 +97,7 @@ window#waybar {
 }
 
 #custom-distro:hover {
-    background-color: @purple;
+    background: linear-gradient(@purple, @dark-purple);
     color: @black;
 }
 
@@ -125,45 +124,27 @@ window#waybar {
         color 0.15s ease;
 }
 
-
-/* Hover */
-
 #workspaces button:hover {
-    background-color: @bg1;
+    background: linear-gradient(@bg3, @bg0);
     color: @fg;
 }
 
-
-/* ============================================================
- * WORKSPACE URGENTE
- * ============================================================ */
-
 #workspaces button.urgent {
-    background-color: @diff-delete;
+    background: linear-gradient(@dark-red, @diff-delete);
     color: @red;
 }
-
-
-/* ============================================================
- * WORKSPACE VAZIO
- * ============================================================ */
 
 #workspaces button.empty {
     color: @grey;
 }
 
-
-/* ============================================================
- * PAC-MAN / WORKSPACE ATIVO
- * ============================================================ */
-
 #workspaces button.active {
-    background-color: @bg1;
+    background: linear-gradient(@bg3, @bg0);
     color: @yellow;
 }
 
 #workspaces button.active:hover {
-    background-color: @yellow;
+    background: linear-gradient(@yellow, @dark-yellow);
     color: @black;
 }
 
@@ -171,12 +152,14 @@ window#waybar {
 /* ============================================================
  * MEDIA
  * ============================================================ */
+
 #audio-views {
     color: @dark-red;
 }
 
+
 #mpris {
-    padding: 0 5px;
+    padding: 0 6px;
 }
 
 #mpris.playing {
@@ -217,12 +200,12 @@ window#waybar {
 }
 
 #taskbar button:hover {
-    background-color: @bg1;
+    background: linear-gradient(@bg3, @bg0);
     color: @fg;
 }
 
 #taskbar button.active {
-    background-color: @bg1;
+    background: linear-gradient(@bg3, @bg0);
     color: @red;
 }
 
@@ -231,10 +214,10 @@ window#waybar {
  * TRAY
  * ============================================================ */
 
-#tray {
+#tray * {
     padding: 0 6px;
 
-    color: @red;
+    border-radius: 9px;
 }
 
 #tray > .passive {
@@ -245,6 +228,10 @@ window#waybar {
     -gtk-icon-effect: highlight;
 }
 
+#tray widget:hover {
+    background: linear-gradient(@bg3, @bg0);
+}
+
 
 /* ============================================================
  * SISTEMA
@@ -253,6 +240,8 @@ window#waybar {
 
 #system * {
     padding: 0 6px;
+
+    border-radius: 6px;
 }
 
 #cpu {
@@ -290,6 +279,13 @@ window#waybar {
 }
 
 
+#cpu:hover,
+#memory:hover,
+#temperature:hover {
+    background: linear-gradient(@bg3, @bg0);
+}
+
+
 /* ============================================================
  * CLOCK
  * ============================================================ */
@@ -307,6 +303,8 @@ window#waybar {
 
 #tiny * {
     padding: 0 6px;
+
+    border-radius: 9px;
 }
 
 #audio {
@@ -317,16 +315,22 @@ window#waybar {
     color: @grey;
 }
 
+#audio :hover {
+    background: linear-gradient(@purple, @dark-purple);
+    color: @black;
+}
+
+
 #energy {
     color: @green;
 }
 
 #custom-profiles.performance {
-    color: @yellow
+    color: @yellow;
 }
 
 #custom-profiles.balanced {
-    color: @light-grey
+    color: @light-grey;
 }
 
 #battery.warning {
@@ -336,6 +340,29 @@ window#waybar {
 #battery.critical {
     color: @red;
 }
+
+#custom-profiles:hover,
+#battery:hover {
+    background: linear-gradient(@green, @diff-add);
+    color: @black;
+}
+
+#custom-profiles.performance:hover,
+#battery.warning:hover {
+    background: linear-gradient(@yellow, @dark-yellow);
+    color: @black;
+}
+
+#custom-profiles.balanced:hover {
+    background: linear-gradient(@bg3, @bg0);
+    color: @fg;
+}
+
+#battery.critical:hover {
+    background: linear-gradient(@red, @dark-red);
+    color: @black;
+}
+
 
 #bluetooth {
     color: @dark-yellow;
@@ -350,6 +377,12 @@ window#waybar {
     color: @grey;
 }
 
+#bluetooth:hover {
+    background: linear-gradient(@yellow, @dark-yellow);
+    color: @black;
+}
+
+
 #network {
     color: @blue;
 }
@@ -362,6 +395,11 @@ window#waybar {
     color: @grey;
 }
 
+#network:hover {
+    background: linear-gradient(@cyan, @dark-cyan);
+    color: @black;
+}
+
 
 /* ============================================================
  * POWER
@@ -370,6 +408,8 @@ window#waybar {
 
 #power * {
     padding: 0 6px;
+
+    border-radius: 6px;
 }
 
 #custom-notification {
@@ -377,7 +417,8 @@ window#waybar {
 }
 
 #custom-notification:hover {
-    background-color: @bg1;
+    background: linear-gradient(@yellow, @dark-yellow);
+    color: @black;
 }
 
 
@@ -386,7 +427,8 @@ window#waybar {
 }
 
 #custom-power:hover {
-    background-color: @diff-delete;
+    background: linear-gradient(@red, @dark-red);
+    color: @black;
 }
 
 

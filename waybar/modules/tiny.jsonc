@@ -44,7 +44,7 @@
     "wireplumber#sink": {
         "node-type": "Audio/Sink",
 
-        "format": "{icon} ",
+        "format": "{icon}",
         "format-muted": "",
         "format-icons": {
             "headphone": "",

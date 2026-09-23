@@ -19,9 +19,9 @@
     "layer": "top",
     "position": "top",
 
-    "height": 35,
-    "spacing": 4,
-    "margin": "0 6px",
+    "height": 36,
+    "spacing": 6,
+    "margin": "8 8 0 8px",
 
     "exclusive": true,
     "gtk-layer-shell": true,
@@ -76,7 +76,7 @@
 
     "tray": {
         "icon-size": 18,
-        "spacing": 6,
+
         "show-passive-items": true,
         "expand": true,
 
