@@ -18,7 +18,7 @@
 
     brightnessctl -n2 set "$light%" &>/dev/null
 
-    notify-send "Brightness: ${light}%" --icon "brightness" \
+    notify-send "Brightness: ${light}%" --icon "brightness-high" \
       --hint "int:value:${light}" \
       --hint "string:x-canonical-private-synchronous:light"
   }

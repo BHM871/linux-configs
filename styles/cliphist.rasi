@@ -10,7 +10,6 @@
 /*****----- Configuration -----*****/
 configuration {
     modi:                       "dmenu";
-    show-icons:                 true;
     display-dmenu:              "";
 }
 
