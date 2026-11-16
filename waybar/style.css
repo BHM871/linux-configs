@@ -333,6 +333,12 @@ window#waybar {
     color: @light-grey;
 }
 
+#backlight {
+    margin: 0 6px;
+
+    color: @yellow
+}
+
 #battery.warning {
     color: @yellow;
 }
@@ -348,6 +354,7 @@ window#waybar {
 }
 
 #custom-profiles.performance:hover,
+#backlight:hover,
 #battery.warning:hover {
     background: linear-gradient(@yellow, @dark-yellow);
     color: @black;

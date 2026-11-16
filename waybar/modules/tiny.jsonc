@@ -91,7 +91,7 @@
 
     // ============================================================
     // ENERGY
-    // PROFILES + BATTERY
+    // PROFILES + BRIGTHNESS + BATTERY
     // ============================================================
 
     "group/energy": {
@@ -99,6 +99,7 @@
 
         "modules": [
             "battery",
+            "backlight",
             "custom/profiles",
         ],
 
@@ -137,6 +138,17 @@
 
         "tooltip": true,
         "tooltip-format": "Battery\nCapacity: {capacity}%",
+    },
+
+
+    // ============================================================
+    // BRIGTHNESS
+    // ============================================================
+
+    "backlight": {
+	      "format": "{icon}",
+	      "format-icons": ["", ""],
+        "tooltip-format": "{percent}% {icon}"
     },
 
 
