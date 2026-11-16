@@ -11,6 +11,7 @@
 configuration {
     modi:                       "window";
     show-icons:                 true;
+    icon-theme:                 "WhiteSur-red-dark";
     display-window:             " Windows";
     window-format:              "{c} -> {t} ";
     window {
