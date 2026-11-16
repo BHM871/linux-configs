@@ -132,6 +132,7 @@
             "on-discharging-warning":  "~/.config/waybar/scripts/power-profiles --notify --battery 'warning'",
             "on-discharging-critical": "~/.config/waybar/scripts/power-profiles --notify --battery 'critical'",
             "on-discharging-5": "~/.config/waybar/scripts/power-profiles --battery 'thurning-off'",
+            "on-discharging-30": "~/.config/waybar/scripts/power-profiles --profile 'balanced'",
             "on-charging-warning":  "~/.config/waybar/scripts/power-profiles --profile 'performance'",
             "on-charging-critical": "~/.config/waybar/scripts/power-profiles --profile 'balanced'",
         },
